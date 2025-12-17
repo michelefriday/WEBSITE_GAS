@@ -96,26 +96,19 @@ function App() {
         
         {/* The Strip */}
         <div className="w-full max-w-[1400px] h-[50vh] md:h-[60vh] flex items-center justify-center">
-          <div className="flex w-full h-full overflow-x-auto md:overflow-hidden snap-x snap-mandatory scrollbar-hide md:justify-center bg-transparent">
+          <div className="flex h-full overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-hide justify-start md:justify-center bg-transparent">
             {PROJECTS.map((project) => (
               <button
                 key={project.id}
                 onClick={() => toggleDock(project.id)}
-                className="group relative flex-none w-[25vw] md:w-[8%] h-full snap-center focus:outline-none transition-all duration-300 border-r border-white/20 md:border-transparent last:border-r-0"
+                className="group relative flex-none w-[20vw] md:w-32 h-full snap-center focus:outline-none transition-all duration-300 border-r border-black last:border-r-0 hover:bg-black"
               >
-                <div className="absolute inset-0 bg-white overflow-hidden transition-all duration-300 group-hover:z-10 group-hover:scale-110 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-                  <img
-                    src={project.thumbnailUrl}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-all duration-500 filter grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100"
-                  />
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                   
                   {/* Overlay Artist Name */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                     <span className="text-white font-mono font-bold text-sm md:text-xl uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] opacity-90 group-hover:opacity-100 transition-opacity">
-                       {project.client}
-                     </span>
-                  </div>
+                   <span className="text-black group-hover:text-white font-mono font-bold text-sm md:text-xl uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap transition-colors">
+                     {project.client}
+                   </span>
                 </div>
               </button>
             ))}
