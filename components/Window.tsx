@@ -22,6 +22,13 @@ export const Window: React.FC<WindowProps> = ({
   const windowRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const credits = project.credits ?? [];
+  const links = project.links ?? [];
+  const hasVideo = Boolean(project.videoUrl);
+  const videoError = project.videoErrorMessage;
+  const infoLine = project.type
+    ? `${project.type} — ${project.client}`
+    : project.client;
 
   // Handle Drag Start
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -134,18 +141,27 @@ export const Window: React.FC<WindowProps> = ({
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-0 scrollbar-hide">
         {/* Media Area */}
-        <div className="w-full bg-gray-100 relative group aspect-video border-b border-black">
-          <img 
-            src={project.thumbnailUrl} 
-            alt={project.title} 
-            className="w-full h-full object-cover grayscale contrast-125"
-          />
-           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
-             {/* Play button simulation */}
-             <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
-               <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
-             </div>
-           </div>
+        <div className="w-full bg-gray-100 relative aspect-video border-b border-black overflow-hidden">
+          {hasVideo ? (
+            <iframe
+              src={project.videoUrl}
+              title={`${project.title} video`}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <div className="w-full h-full relative">
+              <img
+                src={project.thumbnailUrl}
+                alt={project.title}
+                className="w-full h-full object-cover grayscale contrast-125"
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white font-mono text-sm uppercase tracking-widest">
+                {videoError || "Video unavailable"}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Info Area */}
@@ -153,32 +169,40 @@ export const Window: React.FC<WindowProps> = ({
           
           <div>
             <h2 className="text-2xl font-bold uppercase leading-none tracking-tight">{project.title}</h2>
-            <p className="text-xs uppercase text-gray-500 mt-1">{project.type} — {project.client}</p>
+            <p className="text-xs uppercase text-gray-500 mt-1">{infoLine}</p>
           </div>
 
-          <div className="text-sm leading-relaxed whitespace-pre-wrap">
-            {project.description}
-          </div>
+          {project.description && (
+            <div className="text-sm leading-relaxed whitespace-pre-wrap">
+              {project.description}
+            </div>
+          )}
 
           {/* Credits */}
-          <div className="space-y-1 pt-4 border-t border-gray-200">
-             {project.credits.map((credit, i) => (
-               <div key={i} className="text-xs text-gray-500 uppercase">{credit}</div>
-             ))}
-          </div>
+          {credits.length > 0 && (
+            <div className="space-y-1 pt-4 border-t border-gray-200">
+              {credits.map((credit, i) => (
+                <div key={i} className="text-xs text-gray-500 uppercase">
+                  {credit}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Actions */}
-          <div className="flex flex-wrap gap-2 pt-2">
-            {project.links.map((link, i) => (
-              <a 
-                key={i} 
-                href={link.url}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-black text-white text-xs uppercase hover:bg-gray-800 transition-colors"
-              >
-                {link.label} <ExternalLink size={10} />
-              </a>
-            ))}
-          </div>
+          {links.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-2">
+              {links.map((link, i) => (
+                <a 
+                  key={i} 
+                  href={link.url}
+                  className="inline-flex items-center gap-1 px-3 py-1 bg-black text-white text-xs uppercase hover:bg-gray-800 transition-colors"
+                >
+                  {link.label} <ExternalLink size={10} />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       
