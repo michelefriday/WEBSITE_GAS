@@ -1,48 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="FRIDAY Records - Minimalist Management" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FRIDAY</title>
+
+    <!-- If you're NOT using Tailwind via npm/postcss, you can keep this.
+         Otherwise remove and use the proper Tailwind setup. -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-       /* Custom scrollbar hiding for the minimalist feel */
-       .scrollbar-hide::-webkit-scrollbar {
-          display: none;
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
       }
       .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
       body {
-        cursor: crosshair; /* Brutalist touch */
-      }
-      
-      /* Custom Font Loading */
-      @font-face {
-        font-family: 'Bourbon St Bold';
-        src: url('/BourbonStBold.ttf') format('truetype'),
-             url('/BourbonStBold.otf') format('opentype'),
-             url('BourbonStBold.ttf') format('truetype');
-        font-weight: bold;
-        font-style: normal;
-        font-display: swap;
+        cursor: crosshair;
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
-  }
-}
-</script>
-</head>
+  </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- THIS is what mounts your React app in Vite -->
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
