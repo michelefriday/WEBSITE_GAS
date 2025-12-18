@@ -1,4 +1,6 @@
 // types.ts
+import type { ReactNode } from "react";
+
 export type ProjectLink = {
   label: string;
   url: string;
@@ -16,6 +18,7 @@ export type Project = {
   sliceImageUrl?: string;
   videoUrl?: string;
   videoErrorMessage?: string;
+  customContent?: ReactNode;
 };
 
 export type WindowState = {

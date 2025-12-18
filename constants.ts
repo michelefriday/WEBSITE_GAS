@@ -40,7 +40,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl:
       "/stills/scarlett_slice.jpg",
     sliceImageUrl: "/stills/scarlett_slice.jpg",
-    videoErrorMessage: "Error 404 — video missing from archive.",
+    videoErrorMessage: "come back later",
     description:
       "The debut visual album from Scarlett Loran. A collection of ethereal soundscapes matched with stark, brutalist imagery.",
     credits: ["Director: K. Hale", "DOP: M. Varg"],
@@ -76,5 +76,47 @@ export const PROJECTS: Project[] = [
       "Global representation for the avant-pop icon Zulan. Upcoming world tour \"ECHOES\" starts Fall 2025.",
     credits: ["Creative Direction: FRIDAY"],
     links: [{ label: "Tour Dates", url: "#" }],
+  },
+  {
+    id: "p6",
+    title: "SCORE STUDIES",
+    client: "Luca Santamaria",
+    type: "publishing",
+    thumbnailUrl:
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200&auto=format&fit=crop",
+    sliceImageUrl: "/stills/luca_slice.png",
+    videoUrl: "https://www.youtube.com/embed/5fuEcFQ37xg",
+    description:
+      "Live orchestral explorations released through FRIDAY Publishing. Strings recorded to tape, then deconstructed into ambient edits.",
+    credits: ["Composition: L. Santamaria", "Publishing: FRIDAY"],
+    links: [{ label: "Watch Session", url: "https://www.youtube.com/watch?v=5fuEcFQ37xg" }],
+  },
+  {
+    id: "p7",
+    title: "GLASS CHOIR",
+    client: "svn4vr",
+    type: "publishing",
+    thumbnailUrl:
+      "https://images.unsplash.com/photo-1499578124509-1611b77778c7?q=80&w=1200&auto=format&fit=crop",
+    sliceImageUrl: "/stills/svn_slice.jpg",
+    videoUrl: "https://www.youtube.com/embed/AMRH-oLcr4g",
+    description:
+      "Digital psalms from svn4vr — part club, part cathedral. FRIDAY handles editorial, stems, and limited art objects.",
+    credits: ["Sound Design: svn4vr", "Publishing: FRIDAY"],
+    links: [{ label: "Watch Film", url: "https://www.youtube.com/watch?v=AMRH-oLcr4g" }],
+  },
+  {
+    id: "p8",
+    title: "STORM RIDER",
+    client: "Rain Radio",
+    type: "records",
+    thumbnailUrl:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+    sliceImageUrl: "/stills/rain_slice.jpg",
+    videoUrl: "https://www.youtube.com/embed/z66Eh7_LFag",
+    description:
+      "Warehouse vocal edits and late-night transmissions. Rain Radio’s newest 12\" distributed via FRIDAY Records.",
+    credits: ["Mix: Rain Radio", "Pressing: FRIDAY Records"],
+    links: [{ label: "Watch Visual", url: "https://www.youtube.com/watch?v=z66Eh7_LFag" }],
   },
 ];

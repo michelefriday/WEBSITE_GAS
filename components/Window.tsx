@@ -24,6 +24,7 @@ export const Window: React.FC<WindowProps> = ({
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const credits = project.credits ?? [];
   const links = project.links ?? [];
+  const hasCustomContent = Boolean(project.customContent);
   const hasVideo = Boolean(project.videoUrl);
   const videoError = project.videoErrorMessage;
   const infoLine = project.type
@@ -140,70 +141,76 @@ export const Window: React.FC<WindowProps> = ({
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-0 scrollbar-hide">
-        {/* Media Area */}
-        <div className="w-full bg-gray-100 relative aspect-video border-b border-black overflow-hidden">
-          {hasVideo ? (
-            <iframe
-              src={project.videoUrl}
-              title={`${project.title} video`}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          ) : (
-            <div className="w-full h-full relative">
-              <img
-                src={project.thumbnailUrl}
-                alt={project.title}
-                className="w-full h-full object-cover grayscale contrast-125"
-              />
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white font-mono text-sm uppercase tracking-widest">
-                {videoError || "Video unavailable"}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Info Area */}
-        <div className="p-4 font-mono space-y-6">
-          
-          <div>
-            <h2 className="text-2xl font-bold uppercase leading-none tracking-tight">{project.title}</h2>
-            <p className="text-xs uppercase text-gray-500 mt-1">{infoLine}</p>
-          </div>
-
-          {project.description && (
-            <div className="text-sm leading-relaxed whitespace-pre-wrap">
-              {project.description}
-            </div>
-          )}
-
-          {/* Credits */}
-          {credits.length > 0 && (
-            <div className="space-y-1 pt-4 border-t border-gray-200">
-              {credits.map((credit, i) => (
-                <div key={i} className="text-xs text-gray-500 uppercase">
-                  {credit}
+        {hasCustomContent ? (
+          <div className="h-full">{project.customContent}</div>
+        ) : (
+          <>
+            {/* Media Area */}
+            <div className="w-full bg-gray-100 relative aspect-video border-b border-black overflow-hidden">
+              {hasVideo ? (
+                <iframe
+                  src={project.videoUrl}
+                  title={`${project.title} video`}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="w-full h-full relative">
+                  <img
+                    src={project.thumbnailUrl}
+                    alt={project.title}
+                    className="w-full h-full object-cover grayscale contrast-125"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white font-mono text-sm uppercase tracking-widest">
+                    {videoError || "Video unavailable"}
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
-          )}
 
-          {/* Actions */}
-          {links.length > 0 && (
-            <div className="flex flex-wrap gap-2 pt-2">
-              {links.map((link, i) => (
-                <a 
-                  key={i} 
-                  href={link.url}
-                  className="inline-flex items-center gap-1 px-3 py-1 bg-black text-white text-xs uppercase hover:bg-gray-800 transition-colors"
-                >
-                  {link.label} <ExternalLink size={10} />
-                </a>
-              ))}
+            {/* Info Area */}
+            <div className="p-4 font-mono space-y-6">
+              
+              <div>
+                <h2 className="text-2xl font-bold uppercase leading-none tracking-tight">{project.title}</h2>
+                <p className="text-xs uppercase text-gray-500 mt-1">{infoLine}</p>
+              </div>
+
+              {project.description && (
+                <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                  {project.description}
+                </div>
+              )}
+
+              {/* Credits */}
+              {credits.length > 0 && (
+                <div className="space-y-1 pt-4 border-t border-gray-200">
+                  {credits.map((credit, i) => (
+                    <div key={i} className="text-xs text-gray-500 uppercase">
+                      {credit}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Actions */}
+              {links.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {links.map((link, i) => (
+                    <a 
+                      key={i} 
+                      href={link.url}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-black text-white text-xs uppercase hover:bg-gray-800 transition-colors"
+                    >
+                      {link.label} <ExternalLink size={10} />
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
       
       {/* Resizer hint (visual only, actual resize is CSS) */}
