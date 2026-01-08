@@ -742,45 +742,16 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-black font-sans relative overflow-hidden flex flex-col">
-      <button
-        type="button"
-        onClick={cycleDraftMode}
-        aria-label="Cycle draft view"
-        className="fixed top-4 right-4 z-50 border border-black bg-white px-3 py-1 text-xs uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-colors"
-      >
-        {`Draft ${draftMode}`}
-      </button>
       {/* HEADER */}
       <header className="flex-none pt-12 pb-6 flex flex-col items-center justify-center z-10 relative">
         <Logo />
-        <nav className="mt-6 flex gap-8 text-xs font-mono uppercase tracking-[0.5em]">
-          {divisionTabs.map((division) => {
-            const isActive = activeDivision === division;
-            return (
-              <button
-                key={division}
-                type="button"
-                className={`group relative pb-1 transition-colors ${
-                  isActive ? "text-black" : "text-gray-400"
-                }`}
-                onClick={() =>
-                  setActiveDivision((prev) =>
-                    prev === division ? null : division
-                  )
-                }
-              >
-                <span className="cursor-pointer hover:text-black">
-                  {division}
-                </span>
-                <span
-                  className={`absolute left-0 right-0 -bottom-0.5 h-px bg-black transition-opacity ${
-                    isActive ? "opacity-100" : "opacity-0 group-hover:opacity-50"
-                  }`}
-                />
-              </button>
-            );
-          })}
-        </nav>
+        <div className="mt-6 flex gap-8 text-xs font-mono uppercase tracking-[0.5em] text-gray-500">
+          {divisionTabs.map((division) => (
+            <span key={division} className="pb-1 select-none">
+              {division}
+            </span>
+          ))}
+        </div>
       </header>
 
       {/* MAIN STRIP */}
@@ -812,12 +783,6 @@ function App() {
           >
             about
           </a>
-          <button
-            type="button"
-            onClick={openFriday2026IntroWindow}
-            aria-label="Open Friday 2026"
-            className="hidden min-[420px]:inline-flex items-center justify-center w-4 h-4 rounded-full bg-red-600 cursor-pointer transition-transform duration-150 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-[#FDFDFD] hover:scale-110 hover:shadow-[0_0_8px_rgba(239,68,68,0.7)]"
-          />
           <a
             href="#"
             className="text-gray-500 hover:text-black hover:line-through transition-all"
