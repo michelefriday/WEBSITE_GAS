@@ -1,5 +1,5 @@
 // App.tsx
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Logo } from "./components/Logo";
 import { Window } from "./components/Window";
 import {
@@ -7,15 +7,7 @@ import {
   INITIAL_WINDOW_WIDTH,
   INITIAL_WINDOW_HEIGHT,
 } from "./constants";
-import type { WindowState, Project } from "./types";
-
-type Section = "records" | "management" | "publishing";
-
-const SECTION_MAP: Record<Section, string[]> = {
-  records: ["Zulan", "Scarlett Loran", "Rain Radio"],
-  management: ["Fred Again..", "Skye Newman"],
-  publishing: ["Wraith9", "Luca Santamaria", "svn4vr"],
-};
+import type { WindowState, Project, Division } from "./types";
 
 const FRIDAY_2026_INTRO_ID = "friday-2026-intro";
 const FRIDAY_2026_ID = "friday-2026";
@@ -94,8 +86,8 @@ const Friday2026IntroContent: React.FC<{ onContinue: () => void }> = ({
         type="button"
         onClick={onContinue}
         aria-label="Open Friday 2026 Lists"
-        className={`w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 shadow-lg transition duration-300 transform ${
-          showContinue ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+        className={`inline-flex items-center justify-center w-4 h-4 rounded-full bg-red-600 cursor-pointer transition-transform duration-150 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-[#FDFDFD] hover:scale-110 hover:shadow-[0_0_8px_rgba(239,68,68,0.7)] ${
+          showContinue ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
         <span className="sr-only">Continue</span>
@@ -141,14 +133,14 @@ const Friday2026Content: React.FC<{ onOpenPlan: () => void }> = ({
     { id: "mkt-looker", label: "Looker Studio", isFriday: false },
     { id: "mkt-gds", label: "Google Data Studio", isFriday: false },
     { id: "mkt-powerbi", label: "Power BI", isFriday: false },
-    { id: "mkt-dashboards", label: "Dashboards", isFriday: false },
+    { id: "mkt-dashboards", label: "SpotOnTrack", isFriday: false },
     { id: "mkt-cobrand", label: "Co:brand", isFriday: true },
     { id: "mkt-chartmetric", label: "Chartmetric", isFriday: false },
     { id: "mkt-soundcharts", label: "Soundcharts", isFriday: false },
     { id: "mkt-apa", label: "Apple Music for Artists", isFriday: false },
     { id: "mkt-spa", label: "Spotify for Artists", isFriday: false },
-    { id: "mkt-release-tools", label: "Release management tools", isFriday: false },
-    { id: "mkt-asset-delivery", label: "Asset delivery systems", isFriday: false },
+    { id: "mkt-release-tools", label: "Sodatone", isFriday: false },
+    { id: "mkt-asset-delivery", label: "TrendPop", isFriday: false },
     { id: "mkt-opus", label: "Opus", isFriday: false },
   ]);
 
@@ -299,11 +291,181 @@ const PlanContent: React.FC = () => {
   );
 };
 
+type SliceButtonProps = {
+  project: Project;
+  index: number;
+  total: number;
+  draftMode: 1 | 2 | 3;
+  onClick: () => void;
+  expandedProjectId: string | null;
+  onExpandChange: (projectId: string | null) => void;
+};
+
+const SliceButton: React.FC<SliceButtonProps> = ({
+  project,
+  index,
+  total,
+  draftMode,
+  onClick,
+  expandedProjectId,
+  onExpandChange,
+}) => {
+  const [showVideo, setShowVideo] = useState(false);
+  const [videoInstanceKey, setVideoInstanceKey] = useState(0);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const sliceImageSrc = project.sliceImageUrl ?? project.thumbnailUrl;
+  const shouldShowMedia = draftMode !== 3;
+  const hasHoverVideo = Boolean(project.hoverVideoUrl) && shouldShowMedia;
+  const isExpanded = expandedProjectId === project.id;
+  const isAnyExpanded = expandedProjectId !== null;
+  const flexGrow = isAnyExpanded ? (isExpanded ? 1.8 : 0.75) : 1;
+
+  const setRandomStartTime = useCallback((video: HTMLVideoElement) => {
+    const duration = video.duration;
+    if (!Number.isFinite(duration) || duration <= 0) return;
+    const maxStart = Math.max(0, duration - 8);
+    const randomTime = Math.random() * maxStart;
+    video.currentTime = randomTime;
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (!hasHoverVideo) {
+      setShowVideo(false);
+      return;
+    }
+    onExpandChange(project.id);
+    setVideoInstanceKey((prev) => prev + 1);
+    setShowVideo(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowVideo(false);
+    if (expandedProjectId === project.id) {
+      onExpandChange(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (!videoRef.current) return;
+    setRandomStartTime(videoRef.current);
+    const playPromise = videoRef.current.play();
+    if (playPromise && typeof playPromise.then === "function") {
+      playPromise.catch(() => {
+        setShowVideo(false);
+        if (expandedProjectId === project.id) {
+          onExpandChange(null);
+        }
+      });
+    }
+  };
+
+  const handleVideoError = () => {
+    setShowVideo(false);
+    if (expandedProjectId === project.id) {
+      onExpandChange(null);
+    }
+  };
+
+  useEffect(() => {
+    if (!shouldShowMedia) {
+      setShowVideo(false);
+      if (expandedProjectId === project.id) {
+        onExpandChange(null);
+      }
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+    }
+  }, [shouldShowMedia, expandedProjectId, onExpandChange, project.id]);
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`group relative h-full transition-colors ${
+        draftMode === 3 ? "" : "hover:bg-black"
+      }`}
+      style={{
+        borderRight:
+          draftMode === 3 && index !== total - 1
+            ? "1px solid rgba(0,0,0,0.2)"
+            : undefined,
+        flex: `${flexGrow} 1 16rem`,
+        transition: "flex 0.3s ease",
+        minWidth: "120px",
+        maxWidth: draftMode === 3 ? undefined : "480px",
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {shouldShowMedia && (
+        <div className="absolute inset-0 overflow-hidden">
+          {showVideo && project.hoverVideoUrl ? (
+            <video
+              key={`${project.id}-${videoInstanceKey}`}
+              ref={videoRef}
+              src={project.hoverVideoUrl}
+              muted
+              autoPlay
+              playsInline
+              className="w-full h-full object-cover"
+              style={{
+                objectPosition: "center",
+                filter: "contrast(1.05) saturate(0.95)",
+              }}
+              onLoadedMetadata={handleLoadedMetadata}
+              onError={handleVideoError}
+            />
+          ) : (
+            <img
+              src={sliceImageSrc}
+              alt={project.title}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+              style={{
+                objectPosition: "center",
+                filter: "contrast(1.05) saturate(0.95)",
+              }}
+              loading="lazy"
+            />
+          )}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
+        </div>
+      )}
+      {draftMode === 1 && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="text-white font-mono font-bold text-sm md:text-xl uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+            {project.client}
+          </span>
+        </div>
+      )}
+      {draftMode === 3 && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="text-black font-mono font-bold text-sm md:text-xl uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap">
+            {project.client}
+          </span>
+        </div>
+      )}
+    </button>
+  );
+};
+
 
 function App() {
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [topZIndex, setTopZIndex] = useState(10);
-  const [activeSection, setActiveSection] = useState<Section | null>(null);
+  const [draftMode, setDraftMode] = useState<1 | 2 | 3>(1);
+  const [activeDivision, setActiveDivision] = useState<Division | null>(null);
+  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(
+    null
+  );
+  const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
+
+  const divisionTabs: Division[] = ["records", "publishing", "management"];
 
   const closeWindowsByProjectId = useCallback((projectId: string) => {
     setWindows((prev) => prev.filter((w) => w.projectId !== projectId));
@@ -316,6 +478,7 @@ function App() {
       setWindows((prev) => {
         const existing = prev.find((w) => w.projectId === projectId);
         if (existing) {
+          setActiveWindowId(existing.id);
           return prev.map((w) =>
             w.id === existing.id
               ? { ...w, zIndex: topZIndex + 1, isMinimized: false }
@@ -336,7 +499,7 @@ function App() {
           zIndex: topZIndex + 1,
           isMinimized: false,
         };
-
+        setActiveWindowId(newWindow.id);
         return [...prev, newWindow];
       });
     },
@@ -350,6 +513,7 @@ function App() {
     setWindows((prev) => {
       const existing = prev.find((w) => w.projectId === projectId);
       if (existing) {
+        setActiveWindowId(existing.id);
         return prev.map((w) =>
           w.id === existing.id
             ? { ...w, zIndex: topZIndex + 1, isMinimized: false }
@@ -379,7 +543,7 @@ function App() {
         zIndex: topZIndex + 1,
         isMinimized: false,
       };
-
+      setActiveWindowId(newWindow.id);
       return [...prev, newWindow];
     });
   }, [topZIndex]);
@@ -391,6 +555,7 @@ function App() {
     setWindows((prev) => {
       const existing = prev.find((w) => w.projectId === projectId);
       if (existing) {
+        setActiveWindowId(existing.id);
         return prev.map((w) =>
           w.id === existing.id
             ? { ...w, zIndex: topZIndex + 1, isMinimized: false }
@@ -420,7 +585,7 @@ function App() {
         zIndex: topZIndex + 1,
         isMinimized: false,
       };
-
+      setActiveWindowId(newWindow.id);
       return [...prev, newWindow];
     });
   }, [topZIndex]);
@@ -432,6 +597,7 @@ function App() {
     setWindows((prev) => {
       const existing = prev.find((w) => w.projectId === projectId);
       if (existing) {
+        setActiveWindowId(existing.id);
         return prev.map((w) =>
           w.id === existing.id
             ? { ...w, zIndex: topZIndex + 1, isMinimized: false }
@@ -461,7 +627,7 @@ function App() {
         zIndex: topZIndex + 1,
         isMinimized: false,
       };
-
+      setActiveWindowId(newWindow.id);
       return [...prev, newWindow];
     });
   }, [topZIndex]);
@@ -471,8 +637,16 @@ function App() {
     closeWindowsByProjectId(FRIDAY_2026_INTRO_ID);
   }, [openFriday2026Window, closeWindowsByProjectId]);
 
+  const cycleDraftMode = useCallback(() => {
+    setDraftMode((prev) => {
+      if (prev === 3) return 1;
+      return (prev + 1) as 1 | 2 | 3;
+    });
+  }, []);
+
   const closeWindow = useCallback((id: string) => {
     setWindows((prev) => prev.filter((w) => w.id !== id));
+    setActiveWindowId((prev) => (prev === id ? null : prev));
   }, []);
 
   const focusWindow = useCallback((id: string) => {
@@ -483,6 +657,7 @@ function App() {
       );
       return newZ;
     });
+    setActiveWindowId(id);
   }, []);
 
   const updateWindow = useCallback(
@@ -490,6 +665,9 @@ function App() {
       setWindows((prev) =>
         prev.map((w) => (w.id === id ? { ...w, ...newState } : w))
       );
+      if (newState.isMinimized) {
+        setActiveWindowId((prev) => (prev === id ? null : prev));
+      }
     },
     []
   );
@@ -514,6 +692,7 @@ function App() {
       client: "FRIDAY",
       title: "Friday 2026",
       thumbnailUrl: "",
+      division: "management",
       customContent: <Friday2026Content onOpenPlan={openPlanWindow} />,
     }),
     [openPlanWindow]
@@ -525,6 +704,7 @@ function App() {
       client: "FRIDAY",
       title: "",
       thumbnailUrl: "",
+      division: "management",
       customContent: <Friday2026IntroContent onContinue={handleIntroContinue} />,
     }),
     [handleIntroContinue]
@@ -536,20 +716,13 @@ function App() {
       client: "FRIDAY",
       title: "Plan",
       thumbnailUrl: "",
+      division: "management",
       customContent: <PlanContent />,
     }),
     []
   );
 
-  const toggleSection = (section: Section) => {
-    setActiveSection((prev) => (prev === section ? null : section));
-  };
-
-  const visibleProjects = useMemo(() => {
-    if (!activeSection) return PROJECTS;
-    const allowed = SECTION_MAP[activeSection];
-    return PROJECTS.filter((p) => allowed.includes(p.client));
-  }, [activeSection]);
+  const visibleProjects = PROJECTS;
 
   const getProjectById = useCallback(
     (projectId: string) => {
@@ -569,25 +742,44 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-black font-sans relative overflow-hidden flex flex-col">
+      <button
+        type="button"
+        onClick={cycleDraftMode}
+        aria-label="Cycle draft view"
+        className="fixed top-4 right-4 z-50 border border-black bg-white px-3 py-1 text-xs uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-colors"
+      >
+        {`Draft ${draftMode}`}
+      </button>
       {/* HEADER */}
       <header className="flex-none pt-12 pb-6 flex flex-col items-center justify-center z-10 relative">
         <Logo />
-        <nav className="mt-4 flex gap-6 text-xs font-mono uppercase tracking-widest">
-          {(["records", "publishing", "management"] as Section[]).map(
-            (section) => (
+        <nav className="mt-6 flex gap-8 text-xs font-mono uppercase tracking-[0.5em]">
+          {divisionTabs.map((division) => {
+            const isActive = activeDivision === division;
+            return (
               <button
-                key={section}
-                onClick={() => toggleSection(section)}
-                className={`transition-all ${
-                  activeSection === section
-                    ? "text-black underline"
-                    : "text-gray-400 hover:text-black"
+                key={division}
+                type="button"
+                className={`group relative pb-1 transition-colors ${
+                  isActive ? "text-black" : "text-gray-400"
                 }`}
+                onClick={() =>
+                  setActiveDivision((prev) =>
+                    prev === division ? null : division
+                  )
+                }
               >
-                {section}
+                <span className="cursor-pointer hover:text-black">
+                  {division}
+                </span>
+                <span
+                  className={`absolute left-0 right-0 -bottom-0.5 h-px bg-black transition-opacity ${
+                    isActive ? "opacity-100" : "opacity-0 group-hover:opacity-50"
+                  }`}
+                />
               </button>
-            )
-          )}
+            );
+          })}
         </nav>
       </header>
 
@@ -595,28 +787,17 @@ function App() {
       <main className="flex-1 flex items-center justify-center w-full px-4 relative">
         <div className="w-full max-w-[1400px] h-[55vh] flex items-center justify-center">
           <div className="flex h-full overflow-hidden justify-center">
-            {visibleProjects.map((project) => (
-              <button
+            {visibleProjects.map((project, index) => (
+              <SliceButton
                 key={project.id}
+                project={project}
+                index={index}
+                total={visibleProjects.length}
+                draftMode={draftMode}
                 onClick={() => toggleDock(project.id)}
-                className="group relative flex-none w-[20vw] md:w-32 h-full hover:bg-black transition-colors"
-              >
-                <div className="absolute inset-0 overflow-hidden">
-                  <img
-                    src={project.sliceImageUrl || project.thumbnailUrl}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-                    style={{ objectPosition: "center", filter: "contrast(1.05) saturate(0.95)" }}
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="text-white font-mono font-bold text-sm md:text-xl uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
-                    {project.client}
-                  </span>
-                </div>
-              </button>
+                expandedProjectId={expandedProjectId}
+                onExpandChange={setExpandedProjectId}
+              />
             ))}
           </div>
         </div>
@@ -657,6 +838,7 @@ function App() {
                 windowState={win}
                 project={proj}
                 isActive={win.zIndex === topZIndex}
+                shouldPlay={!win.isMinimized && win.id === activeWindowId}
                 onClose={closeWindow}
                 onFocus={focusWindow}
                 onUpdate={updateWindow}

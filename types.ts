@@ -6,17 +6,23 @@ export type ProjectLink = {
   url: string;
 };
 
+export type Division = "records" | "publishing" | "management";
+
 export type Project = {
   id: string;
   client: string;
   title: string;
   thumbnailUrl: string;
+  division: Division;
+  hoverClips: string[];
+  windowVideoUrl: string;
+  hoverVideoUrl?: string;
+  windowTitle?: string;
   type?: string;
   description?: string;
   credits?: string[];
   links?: ProjectLink[];
   sliceImageUrl?: string;
-  videoUrl?: string;
   videoErrorMessage?: string;
   customContent?: ReactNode;
 };
