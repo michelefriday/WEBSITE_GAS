@@ -458,7 +458,7 @@ const SliceButton: React.FC<SliceButtonProps> = ({
 function App() {
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [topZIndex, setTopZIndex] = useState(10);
-  const [draftMode, setDraftMode] = useState<1 | 2 | 3>(1);
+  const [draftMode, setDraftMode] = useState<1 | 2 | 3>(2);
   const [activeDivision, setActiveDivision] = useState<Division | null>(null);
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(
     null
