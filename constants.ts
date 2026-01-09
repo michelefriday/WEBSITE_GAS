@@ -12,9 +12,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "FRED AGAIN..",
     thumbnailUrl: "/stills/fred_pacoca7riel.jpg",
     sliceImageUrl: "/stills/fred_pacoca7riel.jpg",
-    hoverClips: ["/hover/fred_pacoca7riel_hover.mp4"],
-    windowVideoUrl: "/full/fred_pacoca7riel_full.mp4",
-    hoverVideoUrl: "/hover/fred_pacoca7riel.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965617/fred_pacoca7riel_nwtnqj.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965617/fred_pacoca7riel_nwtnqj.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965617/fred_pacoca7riel_nwtnqj.mp4",
   },
   {
     id: "fred_latinmafia",
@@ -24,9 +28,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "FRED AGAIN..",
     thumbnailUrl: "/stills/fred_latinmafia.jpg",
     sliceImageUrl: "/stills/fred_latinmafia.jpg",
-    hoverClips: ["/hover/fred_latinmafia_hover.mp4"],
-    windowVideoUrl: "/full/fred_latinmafia_full.mp4",
-    hoverVideoUrl: "/hover/fred_latinmafia.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/fred_latinmafia_uuuy1n.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/fred_latinmafia_uuuy1n.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/fred_latinmafia_uuuy1n.mp4",
   },
   {
     id: "skye_nostalgia",
@@ -36,9 +44,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "SKYE NEWMAN",
     thumbnailUrl: "/stills/skye_slice.jpg",
     sliceImageUrl: "/stills/skye_slice.jpg",
-    hoverClips: ["/hover/skye_nostalgia_hover.mp4"],
-    windowVideoUrl: "/full/skye_nostalgia_full.mp4",
-    hoverVideoUrl: "/hover/skye.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
     description:
       "Debut EP exploring themes of memory and digital decay. Shot on 16mm film in Tokyo.",
     credits: ["Director: A. Wong", "Color: Company 3"],
@@ -84,9 +96,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "WRAITH9",
     thumbnailUrl: "/stills/wraith_esdee.jpg",
     sliceImageUrl: "/stills/wraith_esdee.jpg",
-    hoverClips: ["/hover/wraith_esdee_hover.mp4"],
-    windowVideoUrl: "/full/wraith_esdee_full.mp4",
-    hoverVideoUrl: "/hover/wraith_esdee.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/wraith_esdee_pyiwaa.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/wraith_esdee_pyiwaa.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/wraith_esdee_pyiwaa.mp4",
   },
   {
     id: "bby_focus",
@@ -96,9 +112,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "BBY",
     thumbnailUrl: "/stills/bby.jpg",
     sliceImageUrl: "/stills/bby.jpg",
-    hoverClips: ["/hover/bby_focus_hover.mp4"],
-    windowVideoUrl: "/full/bby_focus_full.mp4",
-    hoverVideoUrl: "/hover/bby.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965608/bby_m9fnw0.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965608/bby_m9fnw0.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965608/bby_m9fnw0.mp4",
   },
   {
     id: "benjy_sessions",
@@ -108,9 +128,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "BENJY",
     thumbnailUrl: "/stills/benjy.jpg",
     sliceImageUrl: "/stills/benjy.jpg",
-    hoverClips: ["/hover/benjy_sessions_hover.mp4"],
-    windowVideoUrl: "/full/benjy_sessions_full.mp4",
-    hoverVideoUrl: "/hover/benjy.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965605/benjy_c8fnfv.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965605/benjy_c8fnfv.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965605/benjy_c8fnfv.mp4",
   },
   {
     id: "rain_storm",
@@ -120,9 +144,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "RAIN RADIO",
     thumbnailUrl: "/stills/rain_slice.jpg",
     sliceImageUrl: "/stills/rain_slice.jpg",
-    hoverClips: ["/hover/rain_storm_hover.mp4"],
-    windowVideoUrl: "/full/rain_storm_full.mp4",
-    hoverVideoUrl: "/hover/rainradio.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965606/rainradio_gkwarw.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965606/rainradio_gkwarw.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965606/rainradio_gkwarw.mp4",
     description:
       "Warehouse vocal edits and late-night transmissions. Rain Radio’s newest 12\" distributed via FRIDAY Records.",
     credits: ["Mix: Rain Radio", "Pressing: FRIDAY Records"],

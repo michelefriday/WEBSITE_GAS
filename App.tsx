@@ -310,78 +310,152 @@ const SliceButton: React.FC<SliceButtonProps> = ({
   expandedProjectId,
   onExpandChange,
 }) => {
-  const [showVideo, setShowVideo] = useState(false);
-  const [videoInstanceKey, setVideoInstanceKey] = useState(0);
+  const [showVideoFrame, setShowVideoFrame] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const pendingSeekHandler = useRef<(() => void) | null>(null);
+  const pendingReadyHandler = useRef<(() => void) | null>(null);
   const sliceImageSrc = project.sliceImageUrl ?? project.thumbnailUrl;
-  const shouldShowMedia = draftMode !== 3;
-  const hasHoverVideo = Boolean(project.hoverVideoUrl) && shouldShowMedia;
+  const videoSrc =
+    project.hoverVideoUrl || project.hoverClips?.[0] || project.windowVideoUrl;
   const isExpanded = expandedProjectId === project.id;
   const isAnyExpanded = expandedProjectId !== null;
   const flexGrow = isAnyExpanded ? (isExpanded ? 1.8 : 0.75) : 1;
 
-  const setRandomStartTime = useCallback((video: HTMLVideoElement) => {
-    const duration = video.duration;
-    if (!Number.isFinite(duration) || duration <= 0) return;
-    const maxStart = Math.max(0, duration - 8);
-    const randomTime = Math.random() * maxStart;
-    video.currentTime = randomTime;
+  const cleanupVideoListeners = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (pendingSeekHandler.current) {
+      video.removeEventListener('seeked', pendingSeekHandler.current);
+      pendingSeekHandler.current = null;
+    }
+    if (pendingReadyHandler.current) {
+      video.removeEventListener('canplay', pendingReadyHandler.current);
+      video.removeEventListener('loadeddata', pendingReadyHandler.current);
+      pendingReadyHandler.current = null;
+    }
   }, []);
 
+  useEffect(() => {
+    setVideoReady(false);
+    setShowVideoFrame(false);
+    const video = videoRef.current;
+    if (!video || !videoSrc) return;
+
+    let metadataListener: (() => void) | null = null;
+    let seekListener: (() => void) | null = null;
+
+    video.preload = "auto";
+    video.crossOrigin = "anonymous";
+
+    metadataListener = () => {
+      if (!Number.isFinite(video.duration) || video.duration <= 0) {
+        setVideoReady(true);
+        return;
+      }
+      const warmLength = Math.max(video.duration - 0.05, 0);
+      const warmTarget =
+        warmLength > 0
+          ? Math.random() * Math.max(video.duration - 2, 0)
+          : 0;
+
+      const handleSeeked = () => {
+        video.removeEventListener('seeked', handleSeeked);
+        seekListener = null;
+        try {
+          video.pause();
+          video.currentTime = 0;
+        } catch {
+          /* ignore */
+        }
+        setVideoReady(true);
+      };
+
+      seekListener = handleSeeked;
+      video.addEventListener('seeked', handleSeeked);
+      try {
+        video.currentTime = Math.max(0, warmTarget);
+      } catch {
+        video.removeEventListener('seeked', handleSeeked);
+        seekListener = null;
+        setVideoReady(true);
+      }
+    };
+
+    video.addEventListener('loadedmetadata', metadataListener);
+    video.load();
+
+    return () => {
+      if (metadataListener) {
+        video.removeEventListener('loadedmetadata', metadataListener);
+      }
+      if (seekListener) {
+        video.removeEventListener('seeked', seekListener);
+      }
+      cleanupVideoListeners();
+    };
+  }, [videoSrc, cleanupVideoListeners]);
+
   const handleMouseEnter = () => {
-    if (!hasHoverVideo) {
-      setShowVideo(false);
+    onExpandChange(project.id);
+    const video = videoRef.current;
+    if (!video || !videoSrc) {
       return;
     }
-    onExpandChange(project.id);
-    setVideoInstanceKey((prev) => prev + 1);
-    setShowVideo(true);
+
+    cleanupVideoListeners();
+    setShowVideoFrame(false);
+
+    const duration = video.duration;
+    const safeDuration =
+      Number.isFinite(duration) && duration > 2 ? duration - 2 : Math.max(duration - 0.1, 0);
+    const targetTime = safeDuration > 0 ? Math.random() * safeDuration : 0;
+
+    const revealVideo = () => {
+      pendingReadyHandler.current = null;
+      video.removeEventListener('canplay', revealVideo);
+      video.removeEventListener('loadeddata', revealVideo);
+      setShowVideoFrame(true);
+    };
+
+    const afterSeek = () => {
+      video.removeEventListener('seeked', afterSeek);
+      pendingSeekHandler.current = null;
+      if (video.readyState >= 2) {
+        revealVideo();
+      } else {
+        pendingReadyHandler.current = revealVideo;
+        video.addEventListener('canplay', revealVideo);
+        video.addEventListener('loadeddata', revealVideo);
+      }
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    };
+
+    pendingSeekHandler.current = afterSeek;
+    video.addEventListener('seeked', afterSeek);
+
+    try {
+      video.currentTime = Math.max(0, targetTime);
+    } catch {
+      video.removeEventListener('seeked', afterSeek);
+      pendingSeekHandler.current = null;
+    }
   };
 
   const handleMouseLeave = () => {
-    setShowVideo(false);
     if (expandedProjectId === project.id) {
       onExpandChange(null);
     }
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    cleanupVideoListeners();
+    setShowVideoFrame(false);
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
     }
   };
-
-  const handleLoadedMetadata = () => {
-    if (!videoRef.current) return;
-    setRandomStartTime(videoRef.current);
-    const playPromise = videoRef.current.play();
-    if (playPromise && typeof playPromise.then === "function") {
-      playPromise.catch(() => {
-        setShowVideo(false);
-        if (expandedProjectId === project.id) {
-          onExpandChange(null);
-        }
-      });
-    }
-  };
-
-  const handleVideoError = () => {
-    setShowVideo(false);
-    if (expandedProjectId === project.id) {
-      onExpandChange(null);
-    }
-  };
-
-  useEffect(() => {
-    if (!shouldShowMedia) {
-      setShowVideo(false);
-      if (expandedProjectId === project.id) {
-        onExpandChange(null);
-      }
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-    }
-  }, [shouldShowMedia, expandedProjectId, onExpandChange, project.id]);
 
   return (
     <button
@@ -403,53 +477,41 @@ const SliceButton: React.FC<SliceButtonProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {shouldShowMedia && (
-        <div className="absolute inset-0 overflow-hidden">
-          {showVideo && project.hoverVideoUrl ? (
-            <video
-              key={`${project.id}-${videoInstanceKey}`}
-              ref={videoRef}
-              src={project.hoverVideoUrl}
-              muted
-              autoPlay
-              playsInline
-              className="w-full h-full object-cover"
-              style={{
-                objectPosition: "center",
-                filter: "contrast(1.05) saturate(0.95)",
-              }}
-              onLoadedMetadata={handleLoadedMetadata}
-              onError={handleVideoError}
-            />
-          ) : (
-            <img
-              src={sliceImageSrc}
-              alt={project.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-              style={{
-                objectPosition: "center",
-                filter: "contrast(1.05) saturate(0.95)",
-              }}
-              loading="lazy"
-            />
-          )}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
-        </div>
-      )}
-      {draftMode === 1 && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-white font-mono font-bold text-sm md:text-xl uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
-            {project.client}
-          </span>
-        </div>
-      )}
-      {draftMode === 3 && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-black font-mono font-bold text-sm md:text-xl uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap">
-            {project.client}
-          </span>
-        </div>
-      )}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Keep thumbnail visible until video is ready to avoid black flash in production */}
+        <img
+          src={sliceImageSrc}
+          alt={project.title}
+          className={`w-full h-full object-cover transition-opacity duration-200 ${
+            videoReady && showVideoFrame ? "opacity-0" : "opacity-100"
+          }`}
+          style={{
+            objectPosition: "center",
+            filter: "contrast(1.05) saturate(0.95)",
+          }}
+          loading="lazy"
+        />
+        {videoSrc && (
+          <video
+            ref={videoRef}
+            key={`${project.id}-hover`}
+            src={videoSrc}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            crossOrigin="anonymous"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ${
+              videoReady && showVideoFrame ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              objectPosition: "center",
+              filter: "contrast(1.05) saturate(0.95)",
+            }}
+          />
+        )}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
+      </div>
     </button>
   );
 };
@@ -459,7 +521,6 @@ function App() {
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [topZIndex, setTopZIndex] = useState(10);
   const [draftMode, setDraftMode] = useState<1 | 2 | 3>(2);
-  const [activeDivision, setActiveDivision] = useState<Division | null>(null);
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(
     null
   );
