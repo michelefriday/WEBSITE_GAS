@@ -12,11 +12,13 @@ import type { WindowState, Project, Division } from "./types";
 const FRIDAY_2026_INTRO_ID = "friday-2026-intro";
 const FRIDAY_2026_ID = "friday-2026";
 const PLAN_WINDOW_ID = "friday-plan";
+const CONTACT_PROJECT_ID = "contact";
 type FridayListItem = {
   id: string;
   label: string;
   isFriday: boolean;
 };
+const DIVISION_LABEL_CLASS = "text-xs text-gray-500 ff-oswald";
 
 const Friday2026IntroContent: React.FC<{ onContinue: () => void }> = ({
   onContinue,
@@ -660,13 +662,21 @@ function App() {
         const offset = prev.length * 20;
         const isMobile = window.innerWidth < 768;
 
+        const isContact = projectId === CONTACT_PROJECT_ID;
+        const contactHeight = isMobile
+          ? Math.min(200, Math.max(window.innerHeight - 200, 160))
+          : 220;
         const newWindow: WindowState = {
           id: `win_${Date.now()}`,
           projectId,
           x: isMobile ? 10 : 100 + offset,
           y: isMobile ? 80 : 100 + offset,
           width: isMobile ? window.innerWidth - 20 : INITIAL_WINDOW_WIDTH,
-          height: isMobile ? window.innerHeight - 200 : INITIAL_WINDOW_HEIGHT,
+          height: isContact
+            ? contactHeight
+            : isMobile
+            ? window.innerHeight - 200
+            : INITIAL_WINDOW_HEIGHT,
           zIndex: topZIndex + 1,
           isMinimized: false,
         };
@@ -893,7 +903,15 @@ function App() {
     []
   );
 
-  const visibleProjects = PROJECTS;
+  const visibleProjects = useMemo(
+    () => PROJECTS.filter((project) => project.id !== CONTACT_PROJECT_ID),
+    []
+  );
+
+  const contactProject = useMemo(
+    () => PROJECTS.find((project) => project.id === CONTACT_PROJECT_ID),
+    []
+  );
 
   const getProjectById = useCallback(
     (projectId: string) => {
@@ -906,9 +924,12 @@ function App() {
       if (projectId === PLAN_WINDOW_ID) {
         return planProject;
       }
+       if (projectId === CONTACT_PROJECT_ID) {
+        return contactProject;
+      }
       return PROJECTS.find((p) => p.id === projectId);
     },
-    [introProject, friday2026Project, planProject]
+    [introProject, friday2026Project, planProject, contactProject]
   );
 
   return (
@@ -916,9 +937,9 @@ function App() {
       {/* HEADER */}
       <header className="flex-none pt-12 pb-6 flex flex-col items-center justify-center z-10 relative">
         <Logo />
-        <div className="mt-6 flex gap-8 text-xs font-mono uppercase tracking-[0.5em] text-gray-500">
+        <div className="mt-6 flex gap-8 text-xs text-gray-500 ff-oswald">
           {divisionTabs.map((division) => (
-            <span key={division} className="pb-1 select-none">
+            <span key={division} className={`pb-1 select-none ${DIVISION_LABEL_CLASS}`}>
               {division}
             </span>
           ))}
@@ -950,18 +971,14 @@ function App() {
       {/* FOOTER */}
       <footer className="flex-none pb-8 pt-6 flex justify-center text-xs font-mono uppercase tracking-widest">
         <nav className="flex items-center gap-6">
-          <a
-            href="#"
-            className="text-gray-500 hover:text-black hover:line-through transition-all"
-          >
-            about
-          </a>
-          <a
-            href="#"
-            className="text-gray-500 hover:text-black hover:line-through transition-all"
+          <button
+            type="button"
+            onClick={() => openWindow(CONTACT_PROJECT_ID)}
+            className={`p-0 m-0 cursor-pointer ${DIVISION_LABEL_CLASS}`}
+            style={{ background: "transparent", border: "none" }}
           >
             contact
-          </a>
+          </button>
         </nav>
       </footer>
 

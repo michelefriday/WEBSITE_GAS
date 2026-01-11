@@ -7,9 +7,9 @@ export const PROJECTS: Project[] = [
   {
     id: "fred_pacoca7riel",
     title: "USB — PACO CA7RIEL",
-    client: "FRED AGAIN.. — PACO CA7RIEL",
+    client: "Fred Again..",
     division: "management",
-    windowTitle: "FRED AGAIN..",
+    windowTitle: "Fred Again..",
     thumbnailUrl: "/stills/fred_pacoca7riel.jpg",
     sliceImageUrl: "/stills/fred_pacoca7riel.jpg",
     hoverClips: [
@@ -23,9 +23,9 @@ export const PROJECTS: Project[] = [
   {
     id: "fred_latinmafia",
     title: "USB — Latin Mafia",
-    client: "FRED AGAIN.. — LATIN MAFIA",
+    client: "Fred Again..",
     division: "management",
-    windowTitle: "FRED AGAIN..",
+    windowTitle: "Fred Again..",
     thumbnailUrl: "/stills/fred_latinmafia.jpg",
     sliceImageUrl: "/stills/fred_latinmafia.jpg",
     hoverClips: [
@@ -41,7 +41,7 @@ export const PROJECTS: Project[] = [
     title: "NOSTALGIA",
     client: "Skye Newman",
     division: "management",
-    windowTitle: "SKYE NEWMAN",
+    windowTitle: "Skye Newman",
     thumbnailUrl: "/stills/skye_slice.jpg",
     sliceImageUrl: "/stills/skye_slice.jpg",
     hoverClips: [
@@ -61,12 +61,12 @@ export const PROJECTS: Project[] = [
     title: "VELVET ROPE",
     client: "Scarlett Loran",
     division: "records",
-    windowTitle: "SCARLETT LORAN",
+    windowTitle: "Scarlett Loran",
     thumbnailUrl: "/stills/scarlett_slice.jpg",
     sliceImageUrl: "/stills/scarlett_slice.jpg",
-    hoverClips: ["/hover/scarlett_velvet_hover.mp4"],
-    windowVideoUrl: "/full/scarlett_velvet_full.mp4",
-    hoverVideoUrl: "/hover/scarlett.mp4",
+    hoverClips: [],
+    windowVideoUrl: "",
+    embedUrl: "https://untitled.stream/embed/9F1whXKgQF4k",
     videoErrorMessage: "come back later",
     description:
       "The debut visual album from Scarlett Loran. A collection of ethereal soundscapes matched with stark, brutalist imagery.",
@@ -79,9 +79,9 @@ export const PROJECTS: Project[] = [
   {
     id: "wraith_fakemink",
     title: "FAKEMINK (LV)",
-    client: "WRAITH9 — FAKEMINK (LV)",
+    client: "Wraith9",
     division: "publishing",
-    windowTitle: "WRAITH9",
+    windowTitle: "Wraith9",
     thumbnailUrl: "/stills/wraith_fakemink.jpg",
     sliceImageUrl: "/stills/wraith_fakemink.jpg",
     hoverClips: [
@@ -95,9 +95,9 @@ export const PROJECTS: Project[] = [
   {
     id: "wraith_esdee",
     title: "ESDEE (4RAWRS)",
-    client: "WRAITH9 — ESDEE (4RAWRS)",
+    client: "Wraith9",
     division: "publishing",
-    windowTitle: "WRAITH9",
+    windowTitle: "Wraith9",
     thumbnailUrl: "/stills/wraith_esdee.jpg",
     sliceImageUrl: "/stills/wraith_esdee.jpg",
     hoverClips: [
@@ -111,9 +111,9 @@ export const PROJECTS: Project[] = [
   {
     id: "bby_focus",
     title: "Focus Tape",
-    client: "BBY",
+    client: "bby",
     division: "management",
-    windowTitle: "BBY",
+    windowTitle: "bby",
     thumbnailUrl: "/stills/bby.jpg",
     sliceImageUrl: "/stills/bby.jpg",
     hoverClips: [
@@ -127,9 +127,9 @@ export const PROJECTS: Project[] = [
   {
     id: "benjy_sessions",
     title: "Sessions",
-    client: "BENJY",
+    client: "Benjy",
     division: "management",
-    windowTitle: "BENJY",
+    windowTitle: "Benjy",
     thumbnailUrl: "/stills/benjy.jpg",
     sliceImageUrl: "/stills/benjy.jpg",
     hoverClips: [
@@ -143,9 +143,9 @@ export const PROJECTS: Project[] = [
   {
     id: "rain_storm",
     title: "STORM RIDER",
-    client: "Rain Radio",
+    client: "RainRadio",
     division: "records",
-    windowTitle: "RAIN RADIO",
+    windowTitle: "RainRadio",
     thumbnailUrl: "/stills/rain_slice.jpg",
     sliceImageUrl: "/stills/rain_slice.jpg",
     hoverClips: [
@@ -159,5 +159,15 @@ export const PROJECTS: Project[] = [
       "Warehouse vocal edits and late-night transmissions. Rain Radio’s newest 12\" distributed via FRIDAY Records.",
     credits: ["Mix: Rain Radio", "Pressing: FRIDAY Records"],
     links: [{ label: "Watch Visual", url: "https://www.youtube.com/watch?v=z66Eh7_LFag" }],
+  },
+  {
+    id: "contact",
+    title: "Contact",
+    client: "Contact",
+    division: "",
+    windowTitle: "Contact",
+    hoverClips: [],
+    windowVideoUrl: "",
+    windowType: "contact",
   },
 ];

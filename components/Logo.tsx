@@ -17,13 +17,12 @@ export const Logo: React.FC = () => {
           y="50%" 
           dominantBaseline="middle" 
           textAnchor="middle" 
-          className="fill-black text-6xl tracking-tight"
+          className="fill-black text-6xl tracking-tight ff-garamond"
           style={{ 
-            fontFamily: "'Bourbon St Bold', 'Arial Black', sans-serif",
             fontWeight: 'bold' 
           }}
         >
-          FRIDAY
+          friday
         </text>
       </svg>
     </div>

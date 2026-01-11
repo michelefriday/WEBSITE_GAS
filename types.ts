@@ -18,6 +18,8 @@ export type Project = {
   windowVideoUrl: string;
   hoverVideoUrl?: string;
   windowTitle?: string;
+  windowType?: string;
+  embedUrl?: string;
   type?: string;
   description?: string;
   credits?: string[];

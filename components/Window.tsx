@@ -26,7 +26,8 @@ export const Window: React.FC<WindowProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const hasCustomContent = Boolean(project.customContent);
-  const divisionLabel = project.division?.toUpperCase() ?? '';
+  const divisionLabel = project.division ? project.division.toLowerCase() : '';
+  const isContactWindow = project.windowType === 'contact' || project.id === 'contact';
 
   // Handle Drag Start
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -120,7 +121,7 @@ export const Window: React.FC<WindowProps> = ({
         onMouseDown={handleMouseDown}
       >
         <div className="flex items-center gap-2 overflow-hidden">
-          <span className="font-mono text-xs uppercase tracking-wider truncate max-w-[200px]">
+          <span className="text-xs tracking-wider truncate max-w-[200px] ff-garamond">
             {project.windowTitle ?? project.title ?? project.client}
           </span>
         </div>
@@ -153,10 +154,25 @@ export const Window: React.FC<WindowProps> = ({
       <div className="flex-1 overflow-y-auto p-0 scrollbar-hide">
         {hasCustomContent ? (
           <div className="h-full">{project.customContent}</div>
+        ) : isContactWindow ? (
+          <div className="flex flex-1 h-full items-center justify-center">
+            <p className="ff-garamond text-2xl tracking-tight font-bold text-black text-center">
+              info@fridayfridayfriday.co
+            </p>
+          </div>
         ) : (
           <div className="flex flex-col h-full">
             <div className="w-full bg-black relative aspect-video border-b border-black overflow-hidden">
-              {project.hoverVideoUrl ? (
+              {project.embedUrl ? (
+                <iframe
+                  title={project.windowTitle ?? project.title ?? project.client}
+                  src={project.embedUrl}
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                />
+              ) : project.hoverVideoUrl ? (
                 <video
                   key={project.hoverVideoUrl}
                   ref={videoRef}
@@ -171,8 +187,16 @@ export const Window: React.FC<WindowProps> = ({
                 </div>
               )}
             </div>
-            <div className="p-4 font-mono text-xs uppercase tracking-[0.6em] text-gray-700">
-              {divisionLabel}
+            <div className="p-4 ff-garamond text-lg text-black leading-tight">
+              <p>{project.windowTitle ?? project.client ?? project.title}</p>
+              {divisionLabel && (
+                <>
+                  <br />
+                  <p className="text-xs text-gray-500 ff-oswald">
+                    {divisionLabel}
+                  </p>
+                </>
+              )}
             </div>
           </div>
         )}
