@@ -84,9 +84,13 @@ export const PROJECTS: Project[] = [
     windowTitle: "WRAITH9",
     thumbnailUrl: "/stills/wraith_fakemink.jpg",
     sliceImageUrl: "/stills/wraith_fakemink.jpg",
-    hoverClips: ["/hover/wraith_fakemink_hover.mp4"],
-    windowVideoUrl: "/full/wraith_fakemink_full.mp4",
-    hoverVideoUrl: "/hover/wraith_fakemink.mp4",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768131590/wraith_fakemink_h3a62h.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768131590/wraith_fakemink_h3a62h.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768131590/wraith_fakemink_h3a62h.mp4",
   },
   {
     id: "wraith_esdee",

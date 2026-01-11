@@ -299,6 +299,8 @@ type SliceButtonProps = {
   onClick: () => void;
   expandedProjectId: string | null;
   onExpandChange: (projectId: string | null) => void;
+  isPreloaded: boolean;
+  isFailed: boolean;
 };
 
 const SliceButton: React.FC<SliceButtonProps> = ({
@@ -309,6 +311,8 @@ const SliceButton: React.FC<SliceButtonProps> = ({
   onClick,
   expandedProjectId,
   onExpandChange,
+  isPreloaded,
+  isFailed,
 }) => {
   const [showVideoFrame, setShowVideoFrame] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
@@ -318,6 +322,7 @@ const SliceButton: React.FC<SliceButtonProps> = ({
   const sliceImageSrc = project.sliceImageUrl ?? project.thumbnailUrl;
   const videoSrc =
     project.hoverVideoUrl || project.hoverClips?.[0] || project.windowVideoUrl;
+  const hasVideoSource = Boolean(videoSrc) && !isFailed;
   const isExpanded = expandedProjectId === project.id;
   const isAnyExpanded = expandedProjectId !== null;
   const flexGrow = isAnyExpanded ? (isExpanded ? 1.8 : 0.75) : 1;
@@ -339,67 +344,33 @@ const SliceButton: React.FC<SliceButtonProps> = ({
   useEffect(() => {
     setVideoReady(false);
     setShowVideoFrame(false);
+    if (!hasVideoSource) {
+      return;
+    }
     const video = videoRef.current;
-    if (!video || !videoSrc) return;
-
-    let metadataListener: (() => void) | null = null;
-    let seekListener: (() => void) | null = null;
-
-    video.preload = "auto";
-    video.crossOrigin = "anonymous";
-
-    metadataListener = () => {
-      if (!Number.isFinite(video.duration) || video.duration <= 0) {
-        setVideoReady(true);
-        return;
-      }
-      const warmLength = Math.max(video.duration - 0.05, 0);
-      const warmTarget =
-        warmLength > 0
-          ? Math.random() * Math.max(video.duration - 2, 0)
-          : 0;
-
-      const handleSeeked = () => {
-        video.removeEventListener('seeked', handleSeeked);
-        seekListener = null;
-        try {
-          video.pause();
-          video.currentTime = 0;
-        } catch {
-          /* ignore */
-        }
-        setVideoReady(true);
-      };
-
-      seekListener = handleSeeked;
-      video.addEventListener('seeked', handleSeeked);
-      try {
-        video.currentTime = Math.max(0, warmTarget);
-      } catch {
-        video.removeEventListener('seeked', handleSeeked);
-        seekListener = null;
-        setVideoReady(true);
-      }
+    if (!video) return;
+    if (video.readyState >= 2 || isPreloaded) {
+      setVideoReady(true);
+      return;
+    }
+    const handleReady = () => {
+      video.removeEventListener("canplay", handleReady);
+      video.removeEventListener("loadeddata", handleReady);
+      setVideoReady(true);
     };
-
-    video.addEventListener('loadedmetadata', metadataListener);
-    video.load();
-
+    video.addEventListener("canplay", handleReady);
+    video.addEventListener("loadeddata", handleReady);
     return () => {
-      if (metadataListener) {
-        video.removeEventListener('loadedmetadata', metadataListener);
-      }
-      if (seekListener) {
-        video.removeEventListener('seeked', seekListener);
-      }
+      video.removeEventListener("canplay", handleReady);
+      video.removeEventListener("loadeddata", handleReady);
       cleanupVideoListeners();
     };
-  }, [videoSrc, cleanupVideoListeners]);
+  }, [hasVideoSource, isPreloaded, videoSrc, cleanupVideoListeners]);
 
   const handleMouseEnter = () => {
     onExpandChange(project.id);
     const video = videoRef.current;
-    if (!video || !videoSrc) {
+    if (!video || !hasVideoSource) {
       return;
     }
 
@@ -491,7 +462,7 @@ const SliceButton: React.FC<SliceButtonProps> = ({
           }}
           loading="lazy"
         />
-        {videoSrc && (
+        {hasVideoSource && (
           <video
             ref={videoRef}
             key={`${project.id}-hover`}
@@ -525,8 +496,147 @@ function App() {
     null
   );
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
+  const [preloadedVideos, setPreloadedVideos] = useState<Record<string, boolean>>({});
+  const [failedVideos, setFailedVideos] = useState<Record<string, boolean>>({});
 
   const divisionTabs: Division[] = ["records", "publishing", "management"];
+
+  useEffect(() => {
+    let isMounted = true;
+    const projectsToPreload = PROJECTS.filter(
+      (project) => project.hoverClips && project.hoverClips[0]
+    );
+    const total = projectsToPreload.length;
+    if (total === 0) {
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    const maxConcurrent = 3;
+    let index = 0;
+    let active = 0;
+    let completed = 0;
+    let succeeded = 0;
+
+    const signalResult = (projectId: string, success: boolean) => {
+      if (!isMounted) return;
+      if (success) {
+        setPreloadedVideos((prev) => ({
+          ...prev,
+          [projectId]: true,
+        }));
+      } else {
+        setFailedVideos((prev) => ({
+          ...prev,
+          [projectId]: true,
+        }));
+      }
+    };
+
+    const warmVideo = (project: Project) => {
+      const src = project.hoverClips?.[0];
+      if (!src) {
+        signalResult(project.id, false);
+        return Promise.resolve(false);
+      }
+
+      return new Promise<boolean>((resolve) => {
+        const video = document.createElement("video");
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "auto";
+        video.crossOrigin = "anonymous";
+
+        const cleanup = () => {
+          video.removeEventListener("loadedmetadata", handleMetadata);
+          video.removeEventListener("error", handleError);
+          video.removeEventListener("seeked", handleSeeked);
+          video.removeAttribute("src");
+          video.load();
+        };
+
+        const finish = (success: boolean) => {
+          cleanup();
+          resolve(success);
+        };
+
+        const handleError = () => {
+          finish(false);
+        };
+
+        const finalize = () => {
+          video.pause();
+          finish(true);
+        };
+
+        const handleSeeked = () => {
+          video.removeEventListener("seeked", handleSeeked);
+          video.removeEventListener("loadeddata", handleLoadedDataFallback);
+          finalize();
+        };
+
+        const handleLoadedDataFallback = () => {
+          video.removeEventListener("loadeddata", handleLoadedDataFallback);
+          video.removeEventListener("seeked", handleSeeked);
+          finalize();
+        };
+
+        const handleMetadata = () => {
+          let target = 0.05;
+          if (Number.isFinite(video.duration) && video.duration > 3) {
+            target = Math.max(Math.random() * (video.duration - 2), 0);
+          }
+          video.addEventListener("seeked", handleSeeked, { once: true });
+          video.addEventListener("loadeddata", handleLoadedDataFallback, {
+            once: true,
+          });
+          try {
+            video.currentTime = target;
+          } catch {
+            video.removeEventListener("seeked", handleSeeked);
+            video.removeEventListener("loadeddata", handleLoadedDataFallback);
+            finish(true);
+          }
+        };
+
+        video.addEventListener("loadedmetadata", handleMetadata);
+        video.addEventListener("error", handleError);
+        video.src = src;
+        video.load();
+      }).then((success) => {
+        signalResult(project.id, success);
+        if (success) {
+          succeeded += 1;
+        }
+        return success;
+      });
+    };
+
+    const runNext = () => {
+      if (!isMounted) return;
+      while (active < maxConcurrent && index < total) {
+        const project = projectsToPreload[index++];
+        active += 1;
+        warmVideo(project)
+          .catch(() => false)
+          .finally(() => {
+            active -= 1;
+            completed += 1;
+            if (completed === total && isMounted && import.meta.env.DEV) {
+              console.info(`preloaded ${succeeded}/${total} hover videos`);
+            }
+            runNext();
+          });
+      }
+    };
+
+    runNext();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const closeWindowsByProjectId = useCallback((projectId: string) => {
     setWindows((prev) => prev.filter((w) => w.projectId !== projectId));
@@ -829,6 +939,8 @@ function App() {
                 onClick={() => toggleDock(project.id)}
                 expandedProjectId={expandedProjectId}
                 onExpandChange={setExpandedProjectId}
+                isPreloaded={Boolean(preloadedVideos[project.id])}
+                isFailed={Boolean(failedVideos[project.id])}
               />
             ))}
           </div>
