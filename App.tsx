@@ -434,15 +434,15 @@ const SliceButton: React.FC<SliceButtonProps> = ({
     <button
       type="button"
       onClick={onClick}
-      className={`group relative h-full transition-colors ${
-        draftMode === 3 ? "" : "hover:bg-black"
+      className={`group relative h-full transition-colors snap-start w-[33.333vw] md:w-auto ${
+        draftMode === 3 ? "" : "md:hover:bg-black"
       }`}
       style={{
         borderRight:
           draftMode === 3 && index !== total - 1
             ? "1px solid rgba(0,0,0,0.2)"
             : undefined,
-        flex: `${flexGrow} 1 16rem`,
+        flex: `${flexGrow} 1 min(33.333vw, 16rem)`,
         transition: "flex 0.3s ease",
         minWidth: "120px",
         maxWidth: draftMode === 3 ? undefined : "480px",
@@ -483,7 +483,7 @@ const SliceButton: React.FC<SliceButtonProps> = ({
             }}
           />
         )}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
+        <div className="absolute inset-0 bg-black/0 transition-colors md:group-hover:bg-black/25" />
       </div>
     </button>
   );
@@ -949,7 +949,7 @@ function App() {
       {/* MAIN STRIP */}
       <main className="flex-1 flex items-center justify-center w-full px-4 relative">
         <div className="w-full max-w-[1400px] h-[55vh] flex items-center justify-center">
-          <div className="flex h-full overflow-hidden justify-center">
+          <div className="flex h-full overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-hide justify-start md:justify-center pl-4 md:pl-0">
             {visibleProjects.map((project, index) => (
               <SliceButton
                 key={project.id}
