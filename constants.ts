@@ -48,9 +48,9 @@ export const PROJECTS: Project[] = [
       "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
     ],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768671268/YTDown.com_YouTube_Skye-Newman-Out-Out_Media_9US8GUSIxJc_002_720p_duliuj.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768671268/YTDown.com_YouTube_Skye-Newman-Out-Out_Media_9US8GUSIxJc_002_720p_duliuj.mp4",
     description:
       "Debut EP exploring themes of memory and digital decay. Shot on 16mm film in Tokyo.",
     credits: ["Director: A. Wong", "Color: Company 3"],
