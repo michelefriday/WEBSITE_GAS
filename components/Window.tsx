@@ -26,7 +26,6 @@ export const Window: React.FC<WindowProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const hasCustomContent = Boolean(project.customContent);
-  const divisionLabel = project.division ? project.division.toLowerCase() : '';
   const isContactWindow = project.windowType === 'contact' || project.id === 'contact';
 
   // Handle Drag Start
@@ -189,14 +188,6 @@ export const Window: React.FC<WindowProps> = ({
             </div>
             <div className="p-4 ff-garamond text-lg text-black leading-tight">
               <p>{project.windowTitle ?? project.client ?? project.title}</p>
-              {divisionLabel && (
-                <>
-                  <br />
-                  <p className="text-xs text-gray-500 ff-oswald">
-                    {divisionLabel}
-                  </p>
-                </>
-              )}
             </div>
           </div>
         )}
