@@ -45,7 +45,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/skye_slice.jpg",
     sliceImageUrl: "/stills/skye_slice.jpg",
     hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769002953/YTDown.com_YouTube_Skye-Newman-FU-_-UF-Live-from-KOKO-Londo_Media_wxMmLx6pe7s_003_480p_wll0vf.mp4",
     ],
     windowVideoUrl:
       "https://res.cloudinary.com/diwcskwt6/video/upload/v1768671268/YTDown.com_YouTube_Skye-Newman-Out-Out_Media_9US8GUSIxJc_002_720p_duliuj.mp4",
@@ -133,7 +133,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/benjy.jpg",
     sliceImageUrl: "/stills/benjy.jpg",
     hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965605/benjy_c8fnfv.mp4",
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965601/skye_n3mmpf.mp4",
     ],
     windowVideoUrl:
       "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965605/benjy_c8fnfv.mp4",
