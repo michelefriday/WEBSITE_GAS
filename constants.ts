@@ -170,4 +170,20 @@ export const PROJECTS: Project[] = [
     windowVideoUrl: "",
     windowType: "contact",
   },
+  {
+    id: "zulan_forever",
+    title: "FOREVER",
+    client: "Zulan",
+    division: "records",
+    windowTitle: "Zulan",
+    thumbnailUrl: "/stills/zulan_slice.jpg",
+    sliceImageUrl: "/stills/zulan_slice.jpg",
+    hoverClips: [
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769418844/ZULAN_-_Forever_Official_Visualizer_-_ZULAN_720p_h264_youtube_kmi7kv.mp4",
+    ],
+    windowVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769418844/ZULAN_-_Forever_Official_Visualizer_-_ZULAN_720p_h264_youtube_kmi7kv.mp4",
+    hoverVideoUrl:
+      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769418844/ZULAN_-_Forever_Official_Visualizer_-_ZULAN_720p_h264_youtube_kmi7kv.mp4",
+  },
 ];
