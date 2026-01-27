@@ -13,6 +13,124 @@ const FRIDAY_2026_INTRO_ID = "friday-2026-intro";
 const FRIDAY_2026_ID = "friday-2026";
 const PLAN_WINDOW_ID = "friday-plan";
 const CONTACT_PROJECT_ID = "contact";
+
+const EMOJI_FAVICONS = [
+  "🐶",
+  "🐱",
+  "🐭",
+  "🐰",
+  "🦊",
+  "🐻",
+  "🐼",
+  "🐨",
+  "🐯",
+  "🦁",
+  "🐮",
+  "🐷",
+  "🐸",
+  "🐵",
+  "🐔",
+  "🐧",
+  "🐦",
+  "🦉",
+  "🦇",
+  "🐺",
+  "🐴",
+  "🦄",
+  "🐝",
+  "🦋",
+  "🐢",
+  "🐙",
+  "🦈",
+  "🐬",
+  "🦖",
+  "⚽️",
+  "🏀",
+  "🏈",
+  "⚾️",
+  "🎾",
+  "🏐",
+  "🏉",
+  "🥊",
+  "🏓",
+  "🏸",
+  "⛳️",
+  "🎳",
+  "🏒",
+  "⛷️",
+  "🏂",
+  "🏄",
+  "🚴",
+  "🏊",
+  "🏋️",
+  "🤸",
+  "🥋",
+  "🎬",
+  "🎥",
+  "📽️",
+  "🎞️",
+  "🎭",
+  "🎤",
+  "🎧",
+  "🎼",
+  "🎹",
+  "🎸",
+  "🥁",
+  "🎷",
+  "🎺",
+  "🎻",
+  "🎮",
+  "🕹️",
+  "🎲",
+  "🧩",
+  "🎨",
+  "📼",
+  "📷",
+  "📸",
+  "📱",
+  "💻",
+  "🖥️",
+  "⌨️",
+  "🖱️",
+  "📺",
+  "📻",
+  "🔦",
+  "💡",
+  "🕯️",
+  "🔑",
+  "🧸",
+  "🎁",
+  "📦",
+  "🧪",
+  "🔮",
+  "🪩",
+  "🪞",
+  "🧿",
+];
+
+const setEmojiFavicon = (emoji: string) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = "56px serif";
+  ctx.fillText(emoji, canvas.width / 2, canvas.height / 2);
+  const dataUrl = canvas.toDataURL("image/png");
+  const link =
+    (document.querySelector("link[rel*='icon']") as HTMLLinkElement | null) ??
+    (() => {
+      const created = document.createElement("link");
+      created.rel = "icon";
+      created.type = "image/png";
+      document.head.appendChild(created);
+      return created;
+    })();
+  link.href = dataUrl;
+};
 type FridayListItem = {
   id: string;
   label: string;
@@ -502,6 +620,11 @@ function App() {
   const [failedVideos, setFailedVideos] = useState<Record<string, boolean>>({});
 
   const divisionTabs: Division[] = ["records", "publishing", "management"];
+
+  useEffect(() => {
+    const pick = EMOJI_FAVICONS[Math.floor(Math.random() * EMOJI_FAVICONS.length)];
+    setEmojiFavicon(pick);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
