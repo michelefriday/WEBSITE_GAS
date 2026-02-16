@@ -12,13 +12,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "Fred Again..",
     thumbnailUrl: "/stills/fred_pacoca7riel.jpg",
     sliceImageUrl: "/stills/fred_pacoca7riel.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965617/fred_pacoca7riel_nwtnqj.mp4",
-    ],
+    hoverClips: ["/hover/fred_pacoca7riel.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965617/fred_pacoca7riel_nwtnqj.mp4",
+      "/hover/fred_pacoca7riel.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965617/fred_pacoca7riel_nwtnqj.mp4",
+      "/hover/fred_pacoca7riel.mp4",
   },
   {
     id: "fred_latinmafia",
@@ -28,13 +26,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "Fred Again..",
     thumbnailUrl: "/stills/fred_latinmafia.jpg",
     sliceImageUrl: "/stills/fred_latinmafia.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/fred_latinmafia_uuuy1n.mp4",
-    ],
+    hoverClips: ["/hover/fred_latinmafia.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/fred_latinmafia_uuuy1n.mp4",
+      "/hover/fred_latinmafia.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/fred_latinmafia_uuuy1n.mp4",
+      "/hover/fred_latinmafia.mp4",
   },
   {
     id: "skye_nostalgia",
@@ -44,13 +40,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "Skye Newman",
     thumbnailUrl: "/stills/skye_slice.jpg",
     sliceImageUrl: "/stills/skye_slice.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769002953/YTDown.com_YouTube_Skye-Newman-FU-_-UF-Live-from-KOKO-Londo_Media_wxMmLx6pe7s_003_480p_wll0vf.mp4",
-    ],
+    hoverClips: ["/hover/skye.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769002953/YTDown.com_YouTube_Skye-Newman-FU-_-UF-Live-from-KOKO-Londo_Media_wxMmLx6pe7s_003_480p_wll0vf.mp4",
+      "/hover/skye.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769002953/YTDown.com_YouTube_Skye-Newman-FU-_-UF-Live-from-KOKO-Londo_Media_wxMmLx6pe7s_003_480p_wll0vf.mp4",
+      "/hover/skye.mp4",
     description:
       "Debut EP exploring themes of memory and digital decay. Shot on 16mm film in Tokyo.",
     credits: ["Director: A. Wong", "Color: Company 3"],
@@ -84,13 +78,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "Wraith9",
     thumbnailUrl: "/stills/wraith_fakemink.jpg",
     sliceImageUrl: "/stills/wraith_fakemink.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768131590/wraith_fakemink_h3a62h.mp4",
-    ],
+    hoverClips: ["/hover/wraith_fakemink.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768131590/wraith_fakemink_h3a62h.mp4",
+      "/hover/wraith_fakemink.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768131590/wraith_fakemink_h3a62h.mp4",
+      "/hover/wraith_fakemink.mp4",
   },
   {
     id: "wraith_esdee",
@@ -100,13 +92,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "Wraith9",
     thumbnailUrl: "/stills/wraith_esdee.jpg",
     sliceImageUrl: "/stills/wraith_esdee.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/wraith_esdee_pyiwaa.mp4",
-    ],
+    hoverClips: ["/hover/wraith_esdee.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/wraith_esdee_pyiwaa.mp4",
+      "/hover/wraith_esdee.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965600/wraith_esdee_pyiwaa.mp4",
+      "/hover/wraith_esdee.mp4",
   },
   {
     id: "bby_focus",
@@ -116,13 +106,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "bby",
     thumbnailUrl: "/stills/bby.jpg",
     sliceImageUrl: "/stills/bby.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965608/bby_m9fnw0.mp4",
-    ],
+    hoverClips: ["/hover/bby.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965608/bby_m9fnw0.mp4",
+      "/hover/bby.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965608/bby_m9fnw0.mp4",
+      "/hover/bby.mp4",
   },
   {
     id: "benjy_sessions",
@@ -132,13 +120,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "Benjy",
     thumbnailUrl: "/stills/benjy.jpg",
     sliceImageUrl: "/stills/benjy.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768671268/YTDown.com_YouTube_Skye-Newman-Out-Out_Media_9US8GUSIxJc_002_720p_duliuj.mp4",
-    ],
+    hoverClips: ["/hover/benjy.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768671268/YTDown.com_YouTube_Skye-Newman-Out-Out_Media_9US8GUSIxJc_002_720p_duliuj.mp4",
+      "/hover/benjy.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1768671268/YTDown.com_YouTube_Skye-Newman-Out-Out_Media_9US8GUSIxJc_002_720p_duliuj.mp4",
+      "/hover/benjy.mp4",
   },
   {
     id: "rain_storm",
@@ -148,13 +134,11 @@ export const PROJECTS: Project[] = [
     windowTitle: "RainRadio",
     thumbnailUrl: "/stills/rain_slice.jpg",
     sliceImageUrl: "/stills/rain_slice.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965606/rainradio_gkwarw.mp4",
-    ],
+    hoverClips: ["/hover/rainradio.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965606/rainradio_gkwarw.mp4",
+      "/hover/rainradio.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1767965606/rainradio_gkwarw.mp4",
+      "/hover/rainradio.mp4",
     description:
       "Warehouse vocal edits and late-night transmissions. Rain Radio’s newest 12\" distributed via FRIDAY Records.",
     credits: ["Mix: Rain Radio", "Pressing: FRIDAY Records"],
@@ -178,12 +162,10 @@ export const PROJECTS: Project[] = [
     windowTitle: "Zulan",
     thumbnailUrl: "/stills/zulan_slice.jpg",
     sliceImageUrl: "/stills/zulan_slice.jpg",
-    hoverClips: [
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769418844/ZULAN_-_Forever_Official_Visualizer_-_ZULAN_720p_h264_youtube_kmi7kv.mp4",
-    ],
+    hoverClips: ["/hover/zulan.mp4"],
     windowVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769418844/ZULAN_-_Forever_Official_Visualizer_-_ZULAN_720p_h264_youtube_kmi7kv.mp4",
+      "/hover/zulan.mp4",
     hoverVideoUrl:
-      "https://res.cloudinary.com/diwcskwt6/video/upload/v1769418844/ZULAN_-_Forever_Official_Visualizer_-_ZULAN_720p_h264_youtube_kmi7kv.mp4",
+      "/hover/zulan.mp4",
   },
 ];
