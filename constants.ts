@@ -13,6 +13,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/fred_pacoca7riel.jpg",
     sliceImageUrl: "/stills/fred_pacoca7riel.jpg",
     hoverClips: ["/hover/fred_pacoca7riel.mp4"],
+    hoverPreviewUrl: "/preview/fred_pacoca7riel.mp4",
     windowVideoUrl:
       "/hover/fred_pacoca7riel.mp4",
     hoverVideoUrl:
@@ -27,6 +28,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/fred_latinmafia.jpg",
     sliceImageUrl: "/stills/fred_latinmafia.jpg",
     hoverClips: ["/hover/fred_latinmafia.mp4"],
+    hoverPreviewUrl: "/preview/fred_latinmafia.mp4",
     windowVideoUrl:
       "/hover/fred_latinmafia.mp4",
     hoverVideoUrl:
@@ -41,6 +43,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/skye_slice.jpg",
     sliceImageUrl: "/stills/skye_slice.jpg",
     hoverClips: ["/hover/skye.mp4"],
+    hoverPreviewUrl: "/preview/skye.mp4",
     windowVideoUrl:
       "/hover/skye.mp4",
     hoverVideoUrl:
@@ -79,6 +82,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/wraith_fakemink.jpg",
     sliceImageUrl: "/stills/wraith_fakemink.jpg",
     hoverClips: ["/hover/wraith_fakemink.mp4"],
+    hoverPreviewUrl: "/preview/wraith_fakemink.mp4",
     windowVideoUrl: "/hover/wraith_fakemink.mp4",
     hoverVideoUrl: "/hover/wraith_fakemink.mp4",
   },
@@ -91,6 +95,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/wraith_drake.png",
     sliceImageUrl: "/stills/wraith_drake.png",
     hoverClips: ["/hover/wraith_drake.mp4"],
+    hoverPreviewUrl: "/preview/wraith_drake.mp4",
     windowVideoUrl: "/hover/wraith_drake.mp4",
     hoverVideoUrl: "/hover/wraith_drake.mp4",
   },
@@ -103,6 +108,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/bby.jpg",
     sliceImageUrl: "/stills/bby.jpg",
     hoverClips: ["/hover/bby.mp4"],
+    hoverPreviewUrl: "/preview/bby.mp4",
     windowVideoUrl:
       "/hover/bby.mp4",
     hoverVideoUrl:
@@ -117,6 +123,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/benjy.jpg",
     sliceImageUrl: "/stills/benjy.jpg",
     hoverClips: ["/hover/benjy.mp4"],
+    hoverPreviewUrl: "/preview/benjy.mp4",
     windowVideoUrl:
       "/hover/benjy.mp4",
     hoverVideoUrl:
@@ -131,6 +138,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/rain_slice.jpg",
     sliceImageUrl: "/stills/rain_slice.jpg",
     hoverClips: ["/hover/rainradio.mp4"],
+    hoverPreviewUrl: "/preview/rainradio.mp4",
     windowVideoUrl:
       "/hover/rainradio.mp4",
     hoverVideoUrl:
@@ -159,6 +167,7 @@ export const PROJECTS: Project[] = [
     thumbnailUrl: "/stills/zulan_slice.jpg",
     sliceImageUrl: "/stills/zulan_slice.jpg",
     hoverClips: ["/hover/zulan.mp4"],
+    hoverPreviewUrl: "/preview/zulan.mp4",
     windowVideoUrl:
       "/hover/zulan.mp4",
     hoverVideoUrl:

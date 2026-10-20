@@ -399,7 +399,10 @@ const SliceButton: React.FC<SliceButtonProps> = ({
   const pendingReadyHandler = useRef<(() => void) | null>(null);
   const sliceImageSrc = project.sliceImageUrl ?? project.thumbnailUrl;
   const videoSrc =
-    project.hoverVideoUrl || project.hoverClips?.[0] || project.windowVideoUrl;
+    project.hoverPreviewUrl ||
+    project.hoverVideoUrl ||
+    project.hoverClips?.[0] ||
+    project.windowVideoUrl;
   const hasVideoSource = Boolean(videoSrc) && !isFailed;
   const isExpanded = expandedProjectId === project.id;
   const isAnyExpanded = expandedProjectId !== null;
@@ -618,7 +621,7 @@ function App() {
     };
 
     const warmVideo = (project: Project) => {
-      const src = project.hoverClips?.[0];
+      const src = project.hoverPreviewUrl || project.hoverClips?.[0];
       if (!src) {
         signalResult(project.id, false);
         return Promise.resolve(false);
