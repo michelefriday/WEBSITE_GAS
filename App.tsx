@@ -1041,7 +1041,10 @@ function App() {
                 index={index}
                 total={visibleProjects.length}
                 draftMode={draftMode}
-                onClick={() => toggleDock(project.id)}
+                onClick={() => {
+                  if (project.noWindow) return;
+                  toggleDock(project.id);
+                }}
                 expandedProjectId={expandedProjectId}
                 onExpandChange={setExpandedProjectId}
                 isPreloaded={Boolean(preloadedVideos[project.id])}

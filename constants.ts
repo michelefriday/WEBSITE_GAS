@@ -168,6 +168,6 @@ export const PROJECTS: Project[] = [
     sliceImageUrl: "/stills/ives.jpg",
     hoverClips: [],
     windowVideoUrl: "",
-    videoErrorMessage: "coming soon",
+    noWindow: true,
   },
 ];
