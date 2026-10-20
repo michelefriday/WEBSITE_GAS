@@ -159,18 +159,15 @@ export const PROJECTS: Project[] = [
     windowType: "contact",
   },
   {
-    id: "zulan_forever",
-    title: "FOREVER",
-    client: "Zulan",
+    id: "ives_missing",
+    title: "MISSING",
+    client: "Ives",
     division: "records",
-    windowTitle: "Zulan",
-    thumbnailUrl: "/stills/zulan_slice.jpg",
-    sliceImageUrl: "/stills/zulan_slice.jpg",
-    hoverClips: ["/hover/zulan.mp4"],
-    hoverPreviewUrl: "/preview/zulan.mp4",
-    windowVideoUrl:
-      "/hover/zulan.mp4",
-    hoverVideoUrl:
-      "/hover/zulan.mp4",
+    windowTitle: "Ives",
+    thumbnailUrl: "/stills/ives.jpg",
+    sliceImageUrl: "/stills/ives.jpg",
+    hoverClips: [],
+    windowVideoUrl: "",
+    videoErrorMessage: "coming soon",
   },
 ];
